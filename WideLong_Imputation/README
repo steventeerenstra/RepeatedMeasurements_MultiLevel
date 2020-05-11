@@ -1,8 +1,0 @@
-SAS macro's and code to  
-
-import from a wide dataset  
-change from wide to long  
-exploratory analysis of the influence of categorical and continuous covariates on the outcome  
-missing data analysis including imputation
-comparison table of estimates of different imputation methods 
-  (completers, imputation by normal values, multiple imputation based on covariates)
