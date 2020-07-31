@@ -1,0 +1,5 @@
+Example codes for analyses
+
+191029.sas: many macros to do standard analyses for continuous and binary outcomes
+
+200731.sas: at the end: make efficient use of looping over variables in a macro (do the same analysis for a list of variables) 
