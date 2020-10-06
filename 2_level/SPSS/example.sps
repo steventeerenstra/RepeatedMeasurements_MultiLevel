@@ -13,12 +13,12 @@ COMPUTE subject=!subject.
 title !QUOTE(!CONCAT("spaghetti plot for outcome *", !cont_outcome,"*")). 
 GGRAPH
   /GRAPHDATASET NAME="graphdataset" VARIABLES=repeatedmeasure cont_outcome subject[LEVEL=NOMINAL] 
- /GRAPHSPEC SOURCE=GPLFILE("C:\Users\st\Desktop\20 Julia Weijers\spaghetti_plot.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("directory\spaghetti_plot.gpl")
  
 title !QUOTE(!CONCAT("spaghetti plot for *",!cont_outcome,"* by *",!subject,"*")). 
 GGRAPH
   /GRAPHDATASET NAME="graphdataset" VARIABLES=repeatedmeasure cont_outcome subject[LEVEL=NOMINAL] 
- /GRAPHSPEC SOURCE=GPLFILE("C:\Users\st\Desktop\20 Julia Weijers\panelspaghetti_plot.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("directory\panelspaghetti_plot.gpl")
  
 *clean up for new analysis and graphics of other variable.
 * delete the variables made in the macro in the original dataset (=main).
@@ -59,7 +59,7 @@ EXECUTE.
 GGRAPH
  /GRAPHDATASET NAME="graphdataset" VARIABLES=pred1 resid1 subject zeroline MISSING=LISTWISE 
    REPORTMISSING=NO
- /GRAPHSPEC SOURCE=GPLFILE("C:\Users\st\Desktop\20 Julia Weijers\residuals_subject.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("directory\residuals_subject.gpl")
  .
 
 *** panel plot of observed versus predicted profiles by subject.
@@ -69,7 +69,7 @@ EXECUTE.
 title !QUOTE(!CONCAT("observed (dots) vs predicted (line) for ",!cont_outcome)). 
 GGRAPH
   /GRAPHDATASET NAME="graphdataset" VARIABLES=repeatedmeasure cont_outcome cont_outcome_pred subject[LEVEL=NOMINAL] 
- /GRAPHSPEC SOURCE=GPLFILE("C:\Users\st\Desktop\20 Julia Weijers\linear_profile.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("directory\linear_profile.gpl")
 
 
 *clean up for new analysis and graphics of other variable.
@@ -80,6 +80,9 @@ DELETE VARIABLES   cont_outcome repeatedmeasure pred1 resid1 subject cont_outcom
 
 
 * Example: tijd = repeated measure, gh_vas= outcome, studienummer=subject identifier. 
+
+* provide the directory path where the gpl files are stored (these are used in the !spagplots_2level !linear_2level_cont_outcome macros).
+FILE HANDLE directory /NAME ="C:\Users\st\Desktop\shortcuts\Actief\20 Julia Weijers".
 
 ******** gh_vas ***************************************************************************************.
 ** show the profiles..
