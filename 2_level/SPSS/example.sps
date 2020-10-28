@@ -1,5 +1,14 @@
+* provide the directory path where the gpl files are stored (these are used in the !spagplots_2level !linear_2level_cont_outcome macros).
+* and provide the directory path where the dataset is stored.
+FILE HANDLE gpl /NAME ="I:\Sectie3_NAHC\Coach2Move2016\Doelmatigheidsonderzoek\Stepped Wedge\Data\Verwerking\Coach2Move trial augustus 2020\syntaxen\multilevel analyses".
+FILE HANDLE data /NAME ="I:\Sectie3_NAHC\Coach2Move2016\Doelmatigheidsonderzoek\Stepped Wedge\Data\Verwerking\Coach2Move trial augustus 2020".
 
 
+* Open data.
+GET FILE="data\Opgeschoonde export castor C2M trial 5-8-2020 - transposed.sav".
+EXECUTE.
+
+* data has to be open first before the macro is loaded as otherwise the COMPUTE statements in the macro cause errors.
 **** see https://www.ibm.com/support/knowledgecenter/en/SSLVMB_24.0.0/spss/base/syn_define_arguments.html  for more parameters ***.
 
 * note the file references to spaghetti_plot.gpl and panelspaghetti_plot.gpl have to be adapted in the macro.
