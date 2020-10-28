@@ -89,14 +89,6 @@ DELETE VARIABLES   cont_outcome repeatedmeasure pred1 resid1 subject cont_outcom
 
 * Example: tijd = repeated measure, gh_vas= outcome, studienummer=subject identifier. 
 
-* provide the directory path where the gpl files are stored (these are used in the !spagplots_2level !linear_2level_cont_outcome macros).
-FILE HANDLE gpl /NAME ="C:\Users\st\Desktop\shortcuts\Actief\20 Julia Weijers".
-* provide the directory path where the data is stored.
-FILE HANDLE data /NAME ="C:\Users\st\Desktop\shortcuts\Actief\20 Julia Weijers\data".
-
-* open the data.
-GET FILE="data\long_format.sav".
-EXECUTE.
 
 ******** gh_vas ***************************************************************************************.
 ** show the profiles..
