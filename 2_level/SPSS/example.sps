@@ -1,5 +1,4 @@
 
-* FIRST code that opens a dataset (in long format), eg. GET FILE=....
 
 **** see https://www.ibm.com/support/knowledgecenter/en/SSLVMB_24.0.0/spss/base/syn_define_arguments.html  for more parameters ***.
 
@@ -13,12 +12,12 @@ COMPUTE subject=!subject.
 title !QUOTE(!CONCAT("spaghetti plot for outcome *", !cont_outcome,"*")). 
 GGRAPH
   /GRAPHDATASET NAME="graphdataset" VARIABLES=repeatedmeasure cont_outcome subject[LEVEL=NOMINAL] 
- /GRAPHSPEC SOURCE=GPLFILE("directory\spaghetti_plot.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("gpl\spaghetti_plot.gpl")
  
 title !QUOTE(!CONCAT("spaghetti plot for *",!cont_outcome,"* by *",!subject,"*")). 
 GGRAPH
   /GRAPHDATASET NAME="graphdataset" VARIABLES=repeatedmeasure cont_outcome subject[LEVEL=NOMINAL] 
- /GRAPHSPEC SOURCE=GPLFILE("directory\panelspaghetti_plot.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("gpl\panelspaghetti_plot.gpl")
  
 *clean up for new analysis and graphics of other variable.
 * delete the variables made in the macro in the original dataset (=main).
@@ -59,7 +58,7 @@ EXECUTE.
 GGRAPH
  /GRAPHDATASET NAME="graphdataset" VARIABLES=pred1 resid1 subject zeroline MISSING=LISTWISE 
    REPORTMISSING=NO
- /GRAPHSPEC SOURCE=GPLFILE("directory\residuals_subject.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("gpl\residuals_subject.gpl")
  .
 
 *** panel plot of observed versus predicted profiles by subject.
@@ -69,7 +68,7 @@ EXECUTE.
 title !QUOTE(!CONCAT("observed (dots) vs predicted (line) for ",!cont_outcome)). 
 GGRAPH
   /GRAPHDATASET NAME="graphdataset" VARIABLES=repeatedmeasure cont_outcome cont_outcome_pred subject[LEVEL=NOMINAL] 
- /GRAPHSPEC SOURCE=GPLFILE("directory\linear_profile.gpl")
+ /GRAPHSPEC SOURCE=GPLFILE("gpl\linear_profile.gpl")
 
 
 *clean up for new analysis and graphics of other variable.
@@ -82,7 +81,13 @@ DELETE VARIABLES   cont_outcome repeatedmeasure pred1 resid1 subject cont_outcom
 * Example: tijd = repeated measure, gh_vas= outcome, studienummer=subject identifier. 
 
 * provide the directory path where the gpl files are stored (these are used in the !spagplots_2level !linear_2level_cont_outcome macros).
-FILE HANDLE directory /NAME ="C:\Users\st\Desktop\shortcuts\Actief\20 Julia Weijers".
+FILE HANDLE gpl /NAME ="C:\Users\st\Desktop\shortcuts\Actief\20 Julia Weijers".
+* provide the directory path where the data is stored.
+FILE HANDLE data /NAME ="C:\Users\st\Desktop\shortcuts\Actief\20 Julia Weijers\data".
+
+* open the data.
+GET FILE="data\long_format.sav".
+EXECUTE.
 
 ******** gh_vas ***************************************************************************************.
 ** show the profiles..
