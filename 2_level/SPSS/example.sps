@@ -1,5 +1,5 @@
-﻿* Encoding: UTF-8.
-* requires a dataset in long format to be open.
+
+* FIRST code that opens a dataset (in long format), eg. GET FILE=....
 
 **** see https://www.ibm.com/support/knowledgecenter/en/SSLVMB_24.0.0/spss/base/syn_define_arguments.html  for more parameters ***.
 
