@@ -1,1 +1,5 @@
-blablabla
+The example file gives an example of how analysis program works   
+
+important to keep in mind:   
+* put the auxiliary files in the folder map 'gpl' in a folder  
+* put the reference to that folder in the example .sps program  
