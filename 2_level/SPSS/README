@@ -1,5 +1,2 @@
-The docx file shows some point and click and syntax and screenshot to do repeated measures analyses in SPSS   
+Separate folder for the marginal model (gls model / marginal model) and linear mixed model (subject specific model)  
 
-The file example.sps contains SPSS macro's for spaghetti plots and linear mixed model analyses.   
-Together with residuals.gpl and linear_profile.gpl and spaghetti_plot.gpl and panelspaghetti_plot.gpl 
-give a sample how to do mixed model analyses with fit checking in SPSS. Preferably all these files are in one folder.
