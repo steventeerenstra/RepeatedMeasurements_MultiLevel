@@ -1,0 +1,16 @@
+SOURCE: s=userSource(id("graphdataset"))
+  DATA: pred=col(source(s), name("pred_"))
+  DATA: resid=col(source(s), name("resid_"))
+  DATA: zeroline=col(source(s), name("zeroline_"))
+  DATA: subject=col(source(s), name("subject_"), unit.category())
+  GUIDE: axis(dim(1), label("Predicted Values"))
+  GUIDE: axis(dim(2), label("Residuals"))
+  GUIDE: legend(aesthetic(aesthetic.color.exterior), label("subject"))
+ELEMENT: point(position(pred*resid), color.exterior(subject))
+ELEMENT: line(position(pred*zeroline))
+
+
+
+
+
+

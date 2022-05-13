@@ -1,0 +1,7 @@
+SOURCE: s=userSource(id("graphdataset"))
+DATA: resid_=col(source(s), name("resid_"))
+DATA: repeatedmeasure_=col(source(s), name("repeatedmeasure_"), unit.category())
+GUIDE: axis(dim(1), label("Residuals"))
+GUIDE: axis(dim(4), label("repeatedmeasure"), opposite())
+GUIDE: text.title(label("frequency Histogram of Residuals by repeatedmeasure"))
+ELEMENT: interval(position(summary.count(bin.rect(resid_*1*1*repeatedmeasure_))), shape.interior(shape.square))
