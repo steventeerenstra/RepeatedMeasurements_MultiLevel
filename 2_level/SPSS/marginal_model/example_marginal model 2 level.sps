@@ -1,12 +1,9 @@
 ﻿* Encoding: UTF-8.
 
 * define file handles where the gpl folder is (containing macros.sps and the needed gpl files).
-* Example 1: absolute folder paths .
+* Example: you must use absolute folder paths .
 FILE HANDLE gpl /NAME ="C:\Users\st\Desktop\shortcuts\Actief\21 Carmen Siebers\gpl".
 FILE HANDLE data /NAME ="C:\Users\st\Desktop\shortcuts\Actief\21 Carmen Siebers".
-* Example 2: relative folder paths.   .
-FILE HANDLE gpl  /NAME ="....\gpl".
-FILE HANDLE data  /NAME ="....".
 
 * Open data and name it 'original' for use in macros later on.
 GET FILE="data\DataSet BUST EQ-5D_totaal_long format.sav".
