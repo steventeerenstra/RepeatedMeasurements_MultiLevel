@@ -1,10 +1,10 @@
 ﻿* Encoding: UTF-8.
 
-* voor Steven.
+* define file handles where the gpl folder is (containing macros.sps and the needed gpl files).
+* Example 1: absolute folder paths .
 FILE HANDLE gpl /NAME ="C:\Users\st\Desktop\shortcuts\Actief\21 Carmen Siebers\gpl".
 FILE HANDLE data /NAME ="C:\Users\st\Desktop\shortcuts\Actief\21 Carmen Siebers".
-* voor Carmen: aangeven waar de map gpl staat en de map waarin de dataset staat.
-* these references are used in the macros below.  .
+* Example 2: relative folder paths.   .
 FILE HANDLE gpl  /NAME ="....\gpl".
 FILE HANDLE data  /NAME ="....".
 
