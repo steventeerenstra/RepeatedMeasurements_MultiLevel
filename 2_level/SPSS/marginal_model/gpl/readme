@@ -1,0 +1,5 @@
+This folder contains  
+
+* macros.sps  : the spss program that contains the macro definitions  
+* several .gpl files : these are called from the macro definition in macros.sps  
+                       and should be available in the same folder as macros.sps
