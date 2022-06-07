@@ -1,0 +1,20 @@
+SPSS syntaxes for 3 levels: measurements within subjects within clusters     
+modelled by random effects, but this can be changed in one of the macro arguments    
+Data have to be in long data format    
+macro to estimate random and fixed effects and assess the fit (residual plots, observed vs predicted plots)    
+
+adapt the file handle 'gpl' to the directory path where the folder "gpl" is. this contains the graphics generating files and the macros for analyses  
+
+adapt the file handle 'data' to the directory path where the dataset .sav is.  
+  
+
+First open the syntax file(not the data file). This is because multiple datasets are used and they need to have names as defined in the syntax file.   
+
+  
+When something gets stuck, close the datasets without saving them. This is because auxiliary variables and datasets are made and you must not save those otherwise a fresh start is not possible. 
+  
+  
+
+ 
+
+
