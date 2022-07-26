@@ -15,7 +15,7 @@ EXECUTE.
 INSERT   FILE= 'gpl\macros.sps'.
 
 
-* variables below needed to estimate time effects in the control arm.
+* variables below needed to estimate time effects in the control condition.
 COMPUTE T1=0.
 If time=1 T1=1.
 COMPUTE T2=0.
