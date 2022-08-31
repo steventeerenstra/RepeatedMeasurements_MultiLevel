@@ -1,0 +1,4 @@
+2 level models with random intercept (only) for level 2 units  
+continuous and binary outcomes   
+the file example.sps shows examples. The FILE HANDLE must be adapted to your working directory   
+the auxilirary files that are called from example.sps are contained in the folder GPL that can be places in your working directory   
