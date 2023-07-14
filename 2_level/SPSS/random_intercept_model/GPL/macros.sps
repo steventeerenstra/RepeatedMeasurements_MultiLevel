@@ -144,6 +144,9 @@ DATASET ACTIVATE design_allocation.
 DELETE VARIABLES n_obs.
 EXECUTE.
 SORT CASES BY !level2 !repeated_measure.
+* remove decimals to avoid errors in CASESTOVARS.
+FORMAT!level2(f6.0).
+FORMAT !repeated_measure(f6.0).
 CASESTOVARS
   /ID=!level2
   /INDEX=!repeated_measure
@@ -162,7 +165,7 @@ SUMMARIZE
 OMSEND.
 
 *clean up.
-DATASET ACTIVATE original.
+DATASET ACTIVATE !dataset.
 DATASET CLOSE design.
 DATASET CLOSE design_n.
 DATASET CLOSE design_allocation.
