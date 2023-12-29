@@ -1,4 +1,4 @@
-﻿* Encoding: UTF-8.
+* Encoding: UTF-8.
 * data has to be open first before the macro is loaded as otherwise the COMPUTE statements in the macro cause errors.
 **** see https://www.ibm.com/support/knowledgecenter/en/SSLVMB_24.0.0/spss/base/syn_define_arguments.html  for more parameters ***.
 
@@ -98,6 +98,7 @@ AGGREGATE
   /BREAK=!level2 !repeated_measure 
   /n_obs=NU(!outcome)
   /allocation=MEAN(!intervention)
+  /average=MEAN(!outcome)
   .
 
 
@@ -113,11 +114,12 @@ OMS
   /IF COMMANDS=['Cases to Variables']
   /DESTINATION VIEWER=NO.
 
-***************** show first the numbers per cell***************.
+***************** show first the numbers per cell, by deleting the variable allocation and average ***************.
+**************************************** so that only the variable n_obs is left ******.
 DATASET ACTIVATE design.
 DATASET COPY design_n.
 DATASET ACTIVATE design_n.
-DELETE VARIABLES allocation.
+DELETE VARIABLES allocation average.
 EXECUTE.
 
 
@@ -140,11 +142,11 @@ SUMMARIZE
   /CELLS=MEAN
  .
 
-***************** show the design ***************************.
+***************** show the design, now by deleting n_obs and average ***************************.
 DATASET ACTIVATE design.
 DATASET COPY design_allocation.
 DATASET ACTIVATE design_allocation.
-DELETE VARIABLES n_obs.
+DELETE VARIABLES n_obs average.
 EXECUTE.
 SORT CASES BY !level2 !repeated_measure.
 * remove decimals to avoid errors in CASESTOVARS.
@@ -163,6 +165,30 @@ SUMMARIZE
   /MISSING=VARIABLE
   /CELLS=MEAN
  .
+ 
+ ***************** show the average of the outcome by cluster-period, now by deleting n_obs and allocation ***************************.
+DATASET ACTIVATE design.
+DATASET COPY design_average.
+DATASET ACTIVATE design_average.
+DELETE VARIABLES n_obs allocation.
+EXECUTE.
+SORT CASES BY !level2 !repeated_measure.
+* remove decimals to avoid errors in CASESTOVARS.
+FORMAT!level2(f6.0).
+FORMAT !repeated_measure(f6.0).
+CASESTOVARS
+  /ID=!level2
+  /INDEX=!repeated_measure
+  /GROUPBY=VARIABLE
+ .
+
+SUMMARIZE
+  /TABLES=ALL
+  /FORMAT=NOCASENUM NOTOTAL LIST
+  /TITLE='average of the outcome for each combination of level 2 unit (rows) and repeated measure (columns)'
+  /MISSING=VARIABLE
+  /CELLS=MEAN
+ .
 
 *** output all on.
 OMSEND.
@@ -172,6 +198,7 @@ DATASET ACTIVATE !dataset.
 DATASET CLOSE design.
 DATASET CLOSE design_n.
 DATASET CLOSE design_allocation.
+DATASET CLOSE design_average.
 
 !ENDDEFINE.
 
@@ -200,6 +227,31 @@ EXAMINE VARIABLES=!outcome BY !intervention
 !ENDDEFINE.
 
 
+***************************************************************************************************************************.
+**** decription distribution of a binary outcome ******************************************.
+*****overall and by cluster *************************************************************************************************************.
+
+DEFINE !bin_descrip( outcome=!ENCLOSE('(',')') 
+    /intervention=!ENCLOSE('(',')') /level2=!ENCLOSE('(',')') 
+)
+
+title !QUOTE(!CONCAT("overall distribution of ", !outcome)).
+title " over all clusters and periods".
+title " assuming {0,1} coding for outcome".
+GRAPH
+  /BAR(SIMPLE)=PGT(0)(!outcome) BY !intervention
+.
+
+title !QUOTE(!CONCAT("distribution of ", !outcome)).
+title " by cluster but over all periods within cluster".
+title " assuming {0,1} coding for outcome".
+GRAPH
+  /BAR(SIMPLE)=PGT(0)(!outcome) BY !intervention
+  /PANEL COLVAR=!level2 COLOP=CROSS.
+
+!ENDDEFINE.
+
+
 
 ***************************************************************************************************************************.
 ****************************** binary 2 level random intercept**************************************************************************.
@@ -208,14 +260,18 @@ EXAMINE VARIABLES=!outcome BY !intervention
 ** random intercept at level 2 using GENLINMIXED, so for e.g. binary outcomes***.
 ** using link=identity also percentage differences can be done .
 ** also linear mixed model can be done: distribution=normal and link=identity.
-** assumes intervention is coded 0 and 1.
+** assumes intervention is coded 0 and 1 and bin_outcome is 0, 1 coded.
+**with randominterceptlevel2=(no) you can turn of the random intercept ***.
 DEFINE !bin_random_intercept_2level(bin_outcome=!ENCLOSE('(',')')
-/level2=!ENCLOSE('(',')') /level1=!ENCLOSE('(',')')
+/level2=!ENCLOSE('(',')') 
+/level1=!ENCLOSE('(',')')
 /fixed=!ENCLOSE('(',')')
+/factor_ordering=!DEFAULT('DESCENDING') !ENCLOSE('(',')')
 /intervention=!DEFAULT('') !ENCLOSE('(',')')
 /repeated_measure=!DEFAULT('') !ENCLOSE('(',')')
 /distribution=!DEFAULT('BINOMIAL') !ENCLOSE('(',')') /link=!DEFAULT('LOGIT') !ENCLOSE('(',')')
-/dataset=!DEFAULT('original') !ENCLOSE('(',')')
+/randominterceptlevel2=!DEFAULT('YES') !ENCLOSE('(',')')
+/dataset=!ENCLOSE('(',')')
                                    )
 
 
@@ -228,24 +284,31 @@ repeated_measure=(!repeated_measure)
 dataset=(!dataset)
 .
 
+**** general description ***.
+!bin_descrip
+outcome=(!bin_outcome)
+level2=(!level2)
+intervention=(!intervention)
+.
+
 
 **********************************************************************.
 ********* genlinmixed analysis ***********************************.
 
 DATASET ACTIVATE !dataset.
 
-!IF ( (!link= 'identity') !OR (!link='IDENTITY') !OR (!link='Identity') ) !THEN title !QUOTE(!CONCAT("difference in outcome=",!bin_outcome)).
+!IF ( !upcase(!link)='IDENTITY'  ) !THEN title !QUOTE(!CONCAT("difference in outcome=",!bin_outcome)).
 !IFEND.
-!IF ( (!link= 'logit') !OR (!link='LOGIT') !OR (!link='Logit') ) !THEN title !QUOTE(!CONCAT("odds ratio of outcome=",!bin_outcome)).
+!IF ( !upcase(!link)= 'LOGIT' ) !THEN title !QUOTE(!CONCAT("odds ratio of outcome=",!bin_outcome)).
 !IFEND.
 title !QUOTE(!CONCAT("in dataset = ", !dataset)). 
 
 * change the variable level according to the distribution used, else GENLINMIXED will not run.
-!IF ( (!distribution = 'NORMAL') !OR (!distribution='normal') ) !THEN 
+!IF ( !upcase(!distribution) = 'NORMAL' ) !THEN 
 VARIABLE LEVEL !bin_outcome (SCALE) 
 !IFEND
 .
-!IF ( (!distribution = 'BINOMIAL') !OR (!distribution='binomial') ) !THEN 
+!IF ( !upcase(!distribution) = 'BINOMIAL' ) !THEN 
 VARIABLE LEVEL !bin_outcome (NOMINAL) 
 !IFEND
 .
@@ -259,20 +322,24 @@ title "/get-rid-of-spss-genlinmixed-model-viewer/".
 * for binomial distribution: predicted_probability should be saved.
 
 GENLINMIXED
-/DATA_STRUCTURE SUBJECTS = !level2
+!IF ( !upcase(!randominterceptlevel2) !EQ 'YES' ) !THEN
+            /DATA_STRUCTURE SUBJECTS = !level2
+!IFEND
 /FIELDS TARGET=!bin_outcome
 /TARGET_OPTIONS DISTRIBUTION =!distribution LINK=!link
 /FIXED EFFECTS=!fixed
            USE_INTERCEPT = TRUE
-/RANDOM USE_INTERCEPT= TRUE
-                SUBJECTS=!level2
+!IF ( !upcase(!randominterceptlevel2) !EQ 'YES' ) !THEN /RANDOM USE_INTERCEPT= TRUE
+                SUBJECTS=!level2 
                 COVARIANCE_TYPE=VARIANCE_COMPONENTS
+!IFEND
 /BUILD_OPTIONS TARGET_CATEGORY_ORDER=DESCENDING
-INPUTS_CATEGORY_ORDER=DESCENDING MAX_ITERATIONS=100
+INPUTS_CATEGORY_ORDER=!factor_ordering 
+MAX_ITERATIONS=100
 CONFIDENCE_LEVEL=95 DF_METHOD=SATTERTHWAITE COVB=MODEL
-!IF ( (!distribution = 'NORMAL') !OR (!distribution='normal') ) !THEN /SAVE PREDICTED_VALUES(pred_prob_01)
+!IF ( !upcase(!distribution) = 'NORMAL' ) !THEN /SAVE PREDICTED_VALUES(pred_prob_01)
 !ELSE /SAVE PREDICTED_PROBABILITY(pred_prob)
-!IFEND.
+!IFEND
 .
 
 ************* model checking *************************************************.
@@ -358,7 +425,7 @@ DEFINE !continu_random_intercept_2level(continu_outcome=!ENCLOSE('(',')')
 /covars=!DEFAULT('')  !ENCLOSE('(',')')
 /intervention=!DEFAULT('') !ENCLOSE('(',')')
 /repeated_measure=!DEFAULT('') !ENCLOSE('(',')')
-/dataset=!DEFAULT('original') !ENCLOSE('(',')')
+/dataset=!ENCLOSE('(',')')
                                    )
 
 
