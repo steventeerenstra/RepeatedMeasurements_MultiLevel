@@ -1,6 +1,12 @@
 The docx file shows some point and click and syntax and screenshot to do repeated measures analyses in SPSS   
 
-The file example.sps contains SPSS macro's for spaghetti plots and linear mixed model analyses.   
-Together with residuals.gpl and linear_profile.gpl and spaghetti_plot.gpl and panelspaghetti_plot.gpl 
-give a sample how to do mixed model analyses with fit checking in SPSS. Preferably all these files are in one folder.
+The file example.sps shows how analyses are done.   
+In particular it is assumed that visits are not for each subject at uniform times, so there are macros that  
+for a given outcome measure  
+- describe when the non-missing repeated measurements are done   
+- what the distribution is of the outcome is   
+- spaghetti plots and panel plots of the profiles  
+- to perform the several analyses to see which fits best (so including residual plots and observed vs predicted plots)   
+
+Note that the macros and gpl files are in a separate folder which has to be specified in the example.sps file.  
 
