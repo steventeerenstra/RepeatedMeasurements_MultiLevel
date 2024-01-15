@@ -4,7 +4,7 @@
 FILE HANDLE data /NAME= "C:\Users\st\surfdrive\Actief\2401 AFFECT-2 (Eva Molendijk)".
 FILE HANDLE gpl /NAME= "C:\Users\st\surfdrive\Actief\2401 AFFECT-2 (Eva Molendijk)\gpl".
 
-
+**** a dataset has to be read before e.g. insert for macros can be issued.
 ** first db is called original.
 GET
   FILE="data\Database_vertical_CIT CRP Fever.sav".
