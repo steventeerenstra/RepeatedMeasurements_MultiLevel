@@ -9,13 +9,9 @@
 * Encoding: UTF-8.
 * provide the folder "directory" where the gpl files are stored (these are used in the macros below.
 * provide the folder "data" where the dataset is. 
-* >>>> comment out the non-relevant part by preceding with a *.
-* voor Steven.
 FILE HANDLE gpl /NAME ="S:\gpl".
 FILE HANDLE data /NAME ="S:\".
-* voor Stacha, probably something like FILE HANDL gpl /NAME="H\tDS CCAS\Analyses_Statistics.
-*FILE HANDLE gpl  /NAME ="....\gpl".
-*FILE HANDLE data  /NAME ="....".
+
 
 
 * Open data and name it for use in macros later on.
